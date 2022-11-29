@@ -7,29 +7,35 @@ import RegisterUser from './components/RegisterUser';
 import UpdateUser from './components/UpdateUser';
 import DeleteUser from './components/DeleteUser';
 import LogoutUser from './components/Logout';
-const API_URL = process.env.REACT_APP_API_URL
+
+import { Cookies } from 'react-cookie';
+const API_URL = 'http://www.omdbapi.com/?apikey=210a7c25'
+
+// using the react-cookie functionality without using the useCookie hook
+const cookies = new Cookies();
 
 function App() {
 //STATE VARIABLES
-  const [searchTerm,setSearchTerm] = useState("");
-  const [movies,setMovies] = useState([]);
-  const [user,setUser] = useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [movies, setMovies] = useState([]);
+  const [user, setUser] = useState("");
 
   async function searchMovies(title) {
     const req = await fetch (`${API_URL}&s=${title}`);
     const res = await req.json();
     setMovies(res.Search);
-    // console.log(res.Search);
   }
 
-  // useEffect(() => {
-  //   searchMovies("Batman");
-  // },[])
+  useEffect(() => {
+    // when app loads it sets the state to pass log in if name exists in cookies
+    setUser(cookies.get('name'))
+    // searchMovies("Batman");
+  }, [])
 
     return (
     <div className="App">
       <h1>Register</h1>
-      <RegisterUser setter ={setUser}/>
+      <RegisterUser setter={setUser}/>
       <br></br>
 
       {user ?
@@ -41,7 +47,7 @@ function App() {
         <br></br>
         <DeleteUser />
         <br></br>
-        <LogoutUser />
+        <LogoutUser setUserState={setUser} />
       </div>
         : <div>
         <h2>Please Login</h2>

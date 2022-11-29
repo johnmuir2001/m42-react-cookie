@@ -1,4 +1,7 @@
 import {getCookie, writeCookie} from "../common";
+import { Cookies } from 'react-cookie';
+
+const cookies = new Cookies();
 
 export const loginUser = async(username,email,password,setter) => {
     try {
@@ -13,11 +16,10 @@ export const loginUser = async(username,email,password,setter) => {
             })
         });
         const data = await response.json();
-        console.log(data);
         setter(data.username);
-        writeCookie("jwt_token",data.token,7)
-        console.log(data.token);
-        console.log(data.username);
+        // set cookie for token and name  
+        cookies.set('token', data.token, { path: '/' });
+        cookies.set('name', data.username, { path: '/' })
     } catch (error) {
         console.log(error)
     }
