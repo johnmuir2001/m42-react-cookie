@@ -9,7 +9,7 @@ import DeleteUser from './components/DeleteUser';
 import LogoutUser from './components/Logout';
 
 import { Cookies } from 'react-cookie';
-const API_URL = 'http://www.omdbapi.com/?apikey=210a7c25'
+const API_URL = process.env.REACT_APP_API_URL
 
 // using the react-cookie functionality without using the useCookie hook
 const cookies = new Cookies();
